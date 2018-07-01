@@ -1,0 +1,128 @@
+{{#ifCond @root.config.reactApollo "===" true }}
+import {
+  graphql,
+  DataProps,
+  DataValue,
+  MutateProps,
+  ChildMutateProps,
+  ChildDataProps,
+  OperationVariables,
+  ChildProps,
+  MutationOpts,
+  MutationFunc,
+  OperationOption,
+  QueryOpts
+} from "react-apollo";
+import { DocumentNode } from "graphql";
+export interface QueryOptionProps<
+  TProps = any,
+  TData = any,
+  TGraphQLVariables = OperationVariables
+> extends DataProps<TData, TGraphQLVariables> {
+  ownProps: TProps;
+}
+export interface MutationOptionProps<
+  TProps = any,
+  TData = any,
+  TGraphQLVariables = OperationVariables
+> extends MutateProps<TData, TGraphQLVariables> {
+  ownProps: TProps;
+}
+export interface MutationOperationOption<
+  TProps,
+  TData,
+  TGraphQLVariables = OperationVariables,
+  TChildProps = ChildProps<TProps, TData, TGraphQLVariables>
+> {
+  options?:
+    | MutationOpts<TData, TGraphQLVariables>
+    | ((props: TProps) => MutationOpts<TData, TGraphQLVariables>);
+  props?: (
+    props: MutationOptionProps<TProps, TData, TGraphQLVariables>,
+    lastProps?: TChildProps | void
+  ) => TChildProps;
+  skip?: boolean | ((props: any) => boolean);
+  name?: string;
+  withRef?: boolean;
+  shouldResubscribe?: (props: TProps, nextProps: TProps) => boolean;
+  alias?: string;
+}
+export interface QueryOperationOption<
+  TProps,
+  TData,
+  TGraphQLVariables = OperationVariables,
+  TChildProps = ChildProps<TProps, TData, TGraphQLVariables>
+> {
+  options?:
+    | QueryOpts<TGraphQLVariables>
+    | ((props: TProps) => QueryOpts<TGraphQLVariables>);
+  props?: (
+    props: QueryOptionProps<TProps, TData, TGraphQLVariables>,
+    lastProps?: TChildProps | void
+  ) => TChildProps;
+  skip?: boolean | ((props: any) => boolean);
+  name?: string;
+  withRef?: boolean;
+  shouldResubscribe?: (props: TProps, nextProps: TProps) => boolean;
+  alias?: string;
+}
+{{/ifCond}}
+{{#ifCond @root.config.resolvers "!==" false}}
+import { GraphQLResolveInfo } from 'graphql';
+
+type Resolver<Result, Args = any> = (
+  parent: any,
+  args: Args,
+  context: any,
+  info: GraphQLResolveInfo
+) => Promise<Result> | Result;
+{{/ifCond}}
+{{#ifCond @root.config.reactApollo "===" true }}
+{{#each operations}}
+  {{~> reactApollo }}
+
+{{/each}}
+{{/ifCond}}
+
+{{#each scalars}}
+
+{{ toComment description }}
+export type {{ name }} = any;
+{{/each}}
+{{#each interfaces}}
+  {{~> type }}
+
+{{/each}}
+{{#each types}}
+  {{~> type }}
+
+{{/each}}
+{{#ifCond @root.config.resolvers "!==" false }}
+{{#each types}}
+  {{~> resolver }}  
+
+{{/each}}
+{{/ifCond}}
+{{#each inputTypes}}
+  {{~> type }}
+
+{{/each}}
+{{~#each types}}
+  {{~#each fields}}
+    {{~# if hasArguments }}
+export interface {{ toPascalCase name }}{{ toPascalCase ../name }}Args {
+{{#each arguments}}
+  {{ name }}{{ getOptionals this }}: {{ convertedType this }}; {{ toComment description }}
+{{/each}}
+}
+    {{/if}}
+  {{/each}}
+{{/each}}
+{{#each enums}}
+  {{~> enum }}
+{{/each}}
+{{#each unions}}
+{{ toComment description }}
+export type {{ name }} = {{#each possibleTypes}}{{this}}{{#unless @last}} | {{/unless}}{{/each}};
+
+{{/each}}

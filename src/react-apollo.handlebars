@@ -1,0 +1,110 @@
+{{ toComment description }}
+
+{{#ifCond operationType "===" "query"}}
+export type with{{ toPascalCase name }}DataValue = DataValue<
+  {{ toPascalCase name }}.Query,
+  {{ toPascalCase name }}.Variables
+>
+export type with{{ toPascalCase name }}ChildProps<TProps = {}> = ChildDataProps<
+  TProps,
+  {{ toPascalCase name }}.Query,
+  {{ toPascalCase name }}.Variables
+>
+
+export function with{{ toPascalCase name }}<
+  TProps extends {{ toPascalCase name }}.Variables | {} = {},
+  TChildProps = DataProps<{{ toPascalCase name }}.Query, {{ toPascalCase name }}.Variables>
+>(
+  document: DocumentNode,
+  operationOptions?: QueryOperationOption<
+    TProps,
+    {{ toPascalCase name }}.Query,
+    {{ toPascalCase name }}.Variables,
+    TChildProps
+  >
+): ((
+  WrappedComponent: React.ComponentType<TChildProps & TProps>
+) => React.ComponentClass<TProps>) {
+  return graphql<TProps, {{ toPascalCase name }}.Query, {{ toPascalCase name }}.Variables, TChildProps>(
+    document,
+    operationOptions as OperationOption<
+      TProps,
+      {{ toPascalCase name }}.Query,
+      {{ toPascalCase name }}.Variables,
+      TChildProps
+    >
+  );
+}
+{{/ifCond}}
+
+{{#ifCond operationType "===" "subscription"}}
+export type with{{ toPascalCase name }}DataValue = DataValue<
+  {{ toPascalCase name }}.Subscription,
+  {{ toPascalCase name }}.Variables
+>
+export type with{{ toPascalCase name }}ChildProps<TProps = {}> = ChildDataProps<
+  TProps,
+  {{ toPascalCase name }}.Subscription,
+  {{ toPascalCase name }}.Variables
+>
+export function with{{ toPascalCase name }}<
+  TProps extends {{ toPascalCase name }}.Variables | {} = {},
+  TChildProps = DataProps<{{ toPascalCase name }}.Subscription, {{ toPascalCase name }}.Variables>
+>(
+  document: DocumentNode,
+  operationOptions?: QueryOperationOption<
+    TProps,
+    {{ toPascalCase name }}.Subscription,
+    {{ toPascalCase name }}.Variables,
+    TChildProps
+  >
+): ((
+  WrappedComponent: React.ComponentType<TChildProps & TProps>
+) => React.ComponentClass<TProps>) {
+  return graphql<TProps, {{ toPascalCase name }}.Subscription, {{ toPascalCase name }}.Variables, TChildProps>(
+    document,
+    operationOptions as OperationOption<
+      TProps,
+      {{ toPascalCase name }}.Subscription,
+      {{ toPascalCase name }}.Variables,
+      TChildProps
+    >
+  );
+}
+{{/ifCond}}
+
+{{#ifCond operationType "===" "mutation"}}
+export type with{{ toPascalCase name }}MutationFunc = MutationFunc<
+  {{ toPascalCase name }}.Mutation,
+  {{ toPascalCase name }}.Variables
+>
+export type with{{ toPascalCase name }}ChildProps<TProps = {}> = ChildMutateProps<
+  TProps,
+  {{ toPascalCase name }}.Mutation,
+  {{ toPascalCase name }}.Variables
+>
+export function with{{ toPascalCase name }}<
+  TProps extends {{ toPascalCase name }}.Variables | {} = {},
+  TChildProps = MutateProps<{{ toPascalCase name }}.Mutation, {{ toPascalCase name }}.Variables>
+>(
+  document: DocumentNode,
+  operationOptions?: MutationOperationOption<
+    TProps,
+    {{ toPascalCase name }}.Mutation,
+    {{ toPascalCase name }}.Variables,
+    TChildProps
+  >
+): ((
+  WrappedComponent: React.ComponentType<TChildProps & TProps>
+) => React.ComponentClass<TProps>) {
+  return graphql<TProps, {{ toPascalCase name }}.Mutation, {{ toPascalCase name }}.Variables, TChildProps>(
+    document,
+    operationOptions as OperationOption<
+      TProps,
+      {{ toPascalCase name }}.Mutation,
+      {{ toPascalCase name }}.Variables,
+      TChildProps
+    >
+  );
+}
+{{/ifCond}}
