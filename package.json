@@ -39,5 +39,8 @@
       "json",
       "node"
     ]
+  },
+  "dependencies": {
+    "graphql": "0.13.2"
   }
 }
