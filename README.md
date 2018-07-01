@@ -1,9 +1,14 @@
-# TypeScript apollo template
+# TypeScript React Apollo template
+
+**Extremely alpha, expect everything to change!**
 
 This template generates TypeScript typings for both React-Apollo client.
-**Extremely alpha, expect everything to change!**
+
 Currently a fork of graphql-codegen-typescript-template. Soon that will not be the case.
 In the future this template will be used together with graphql-codegen-typescript-template.
+
+## How to use
+Coming soon...
 
 ## Generator Config
 
