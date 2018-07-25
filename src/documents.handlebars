@@ -1,5 +1,5 @@
 {{#each operations }}
-export namespace {{ toPascalCase name }} {
+export declare namespace {{ toPascalCase name }} {
   export type Variables = {
   {{#each variables}}
     {{#if @root.config.immutableTypes }}readonly {{/if}}{{ name }}{{ getOptionals this }}: {{ convertedType this }};
@@ -25,7 +25,7 @@ export namespace {{ toPascalCase name }} {
 {{/each}}
 {{#each fragments }}
 
-export namespace {{name}} {
+export declare namespace {{name}} {
   export type Fragment ={{#if hasFields}} {
     {{#if @root.config.immutableTypes }}readonly {{/if}}__typename?: "{{ onType }}";
     {{> selectionSet fields }}

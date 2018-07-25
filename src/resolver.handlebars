@@ -1,5 +1,5 @@
 {{ toComment description }}
-export namespace {{ name }}Resolvers {
+export declare namespace {{ name }}Resolvers {
   export interface Resolvers {
     {{#each fields}}
     {{ name }}?: {{ getFieldResolverName name }}; {{ toComment description }}

@@ -9,6 +9,7 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "sourceMap": true,
+    "types": ["jest"],
     "declaration": true,
     "outDir": "./dist/"
   },
